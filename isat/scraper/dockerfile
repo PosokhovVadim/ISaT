@@ -1,0 +1,6 @@
+#scraper
+FROM base
+
+EXPOSE 8080
+
+CMD ["poetry", "run", "scraper"]

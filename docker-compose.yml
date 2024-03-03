@@ -1,0 +1,13 @@
+version: '3'
+services:
+  dependencies:
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: base
+  scraper:
+    build:
+      context: ./isat/scraper
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
