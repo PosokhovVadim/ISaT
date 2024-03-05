@@ -3,4 +3,6 @@ FROM base
 
 EXPOSE 8080
 
+ENV CONFIG_PATH isat/scraper/config/config.yaml
+
 CMD ["poetry", "run", "scraper"]

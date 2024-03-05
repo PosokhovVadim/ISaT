@@ -10,6 +10,9 @@ python = "^3.11"
 fastapi = "^0.109.2"
 uvicorn = "^0.27.1"
 pydantic = "^2.6.1"
+logging = "^0.4.9.6"
+pyyaml = "^6.0.1"
+pre-commit = "^3.6.2"
 
 
 [tool.poetry.group.dev.dependencies]
