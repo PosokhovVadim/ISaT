@@ -14,9 +14,3 @@ class Logger:
                 )
             )
             self.logger.addHandler(file_handler)
-
-    def info(self, message):
-        self.logger.info(f"{message}")
-
-    def error(self, message):
-        self.logger.error(f"{message}")

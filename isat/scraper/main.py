@@ -1,30 +1,31 @@
 from fastapi import FastAPI
-from isat.pkg.logger.logger import Logger
 from isat.scraper.config.config import Config
 from isat.scraper import scraper
+import logging
+import asyncio
 
 app = FastAPI()
-log = Logger("scraper.log")
+log = logging.getLogger("scraper.log")
 
 
-# for instance
 @app.get("/scrap")
 def read_root():
-    # implement is later
     log.info("Start scraping")
     return {"Service": "1"}
 
 
-def main():
+async def run_process():
     log.info("Starting scraper service")
 
     # cfg = Config(os.getenv("CONFIG_PATH"))
     cfg = Config("isat/scraper/config/config.yaml")
 
-    scr = scraper.Scraper(
-        cfg.base_url, cfg.allow_domain, "isat/scraper/config/urls_data.json"
-    )
+    scr = scraper.Scraper(cfg.base_url, cfg.allow_domain)
 
-    scr.scrape(cfg.base_url)
+    await scr.scrape(cfg.base_url)
     # log.info(f"Config: {cfg.host}:{cfg.port}")
     # uvicorn.run("isat.scraper.main:app", host=cfg.host, port=cfg.port, reload=True)
+
+
+def main():
+    asyncio.run(run_process())
