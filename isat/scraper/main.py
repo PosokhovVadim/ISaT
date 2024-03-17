@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from isat.scraper.config.config import Config
 from isat.scraper import scraper
@@ -8,7 +9,7 @@ app = FastAPI()
 log = logging.getLogger("scraper.log")
 
 
-@app.get("/scrap")
+@app.get("/scrape")
 def read_root():
     log.info("Start scraping")
     return {"Service": "1"}
@@ -17,8 +18,7 @@ def read_root():
 async def run_process():
     log.info("Starting scraper service")
 
-    # cfg = Config(os.getenv("CONFIG_PATH"))
-    cfg = Config("isat/scraper/config/config.yaml")
+    cfg = Config(os.getenv("CONFIG_PATH"))
 
     scr = scraper.Scraper(cfg.base_url, cfg.allow_domain)
 

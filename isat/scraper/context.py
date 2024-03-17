@@ -1,5 +1,6 @@
 import httpx
 from isat.pkg.logger.logger import Logger
+from isat.pkg.storage.local.local import Local_Storage
 
 
 class Context:
@@ -11,6 +12,8 @@ class Context:
         self.http_client = httpx.AsyncClient(headers=self.headers, timeout=self.timeout)
 
         self.log = Logger("scraper.log")
+
+        self.local_storage = Local_Storage("images/")
 
 
 ctx = Context()

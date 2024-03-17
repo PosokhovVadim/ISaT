@@ -1,8 +1,10 @@
 from urllib.parse import urljoin, urlparse
+import uuid
 from bs4 import BeautifulSoup
 import logging
 import asyncio
 from isat.scraper.context import ctx
+from isat.pkg.models.image import Image
 
 log = logging.getLogger("scraper.log")
 
@@ -29,17 +31,27 @@ class Scraper:
         return parsed_url.netloc
 
     async def save_images(self, image_url):
-        # respone = await fetch_url(image_url)
-        # log.info(f"Saving {image_url} : {respone.status_code}")
-        # if respone.status_code != 200:
-        #     log.warning(f"Failed to load {image_url}")
-        #     return
+        response = await fetch_url(image_url)
+        if response.status_code != 200:
+            log.warning(f"Failed to get image by url: {image_url}")
+            return
+
+        content_type = response.headers["content-type"]
+        if content_type == "image/jpeg":
+            data = response.read()
+
+            id = str(uuid.uuid4())
+            local_path = ctx.local_storage.directory + id + ".jpg"
+            image = Image(id=id, url=image_url, local_path=local_path)
+
+            # save local
+            ctx.local_storage.save_image(data, image)
+
+            # todo: save to db
 
         self.total_images += 1
         log.info(f"Loaded {image_url}")
         log.info(f"Total images: {self.total_images}")
-        # todo: local save
-        # todo: save to db
 
     async def processing_images(self, soup):
         images_url = [

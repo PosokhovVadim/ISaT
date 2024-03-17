@@ -3,3 +3,4 @@ __pycache__
 *.toml
 *.log
 *.env
+images
