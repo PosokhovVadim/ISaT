@@ -11,3 +11,9 @@ services:
       dockerfile: dockerfile
     ports:
       - "8080:8080"
+    volumes:
+      - ./isat/data:/isat/data
+      - ./images:/app/images
+      - ./logs:/app/logs
+    depends_on:
+      - dependencies

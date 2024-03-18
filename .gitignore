@@ -1,3 +1,8 @@
 __pycache__
 *.lock
 *.toml
+logs
+*.env
+images
+.ruff_cache
+data
