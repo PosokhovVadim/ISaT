@@ -11,5 +11,9 @@ services:
       dockerfile: dockerfile
     ports:
       - "8080:8080"
-    environment:
-      - CONFIG_PATH=isat/scraper/config/config.yaml
+    volumes:
+      - ./isat/data:/isat/data
+      - ./images:/app/images
+      - ./logs/scraper.log:/app/logs/scraper.log
+    depends_on:
+      - dependencies

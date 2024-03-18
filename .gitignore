@@ -1,6 +1,8 @@
 __pycache__
 *.lock
 *.toml
-*.log
+logs
 *.env
 images
+.ruff_cache
+*.db

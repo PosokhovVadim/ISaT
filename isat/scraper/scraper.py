@@ -44,10 +44,8 @@ class Scraper:
             local_path = ctx.local_storage.directory + id + ".jpg"
             image = Image(id=id, url=image_url, local_path=local_path)
 
-            # save local
             ctx.local_storage.save_image(data, image)
-
-            # todo: save to db
+            ctx.storage.add_image(image)
 
         self.total_images += 1
         log.info(f"Loaded {image_url}")
@@ -78,8 +76,6 @@ class Scraper:
 
                 await self.processing_images(soup)
 
-                log.info(f"Scraped {url}")
-                log.info(f"Total visited: {len(self.visited_urls)}")
                 for link in soup.find_all("a", href=True):
                     if "data-toggle" in link.attrs and link["data-toggle"] == "modal":
                         continue

@@ -1,9 +1,10 @@
 import os
 from fastapi import FastAPI
 from isat.scraper.config.config import Config
-from isat.scraper import scraper
+from isat.scraper.scraper import Scraper
 import logging
 import asyncio
+from isat.scraper.context import ctx
 
 app = FastAPI()
 log = logging.getLogger("scraper.log")
@@ -20,9 +21,11 @@ async def run_process():
 
     cfg = Config(os.getenv("CONFIG_PATH"))
 
-    scr = scraper.Scraper(cfg.base_url, cfg.allow_domain)
+    scr = Scraper(cfg.base_url, cfg.allow_domain)
 
     await scr.scrape(cfg.base_url)
+
+    ctx.storage.close_session()
     # log.info(f"Config: {cfg.host}:{cfg.port}")
     # uvicorn.run("isat.scraper.main:app", host=cfg.host, port=cfg.port, reload=True)
 

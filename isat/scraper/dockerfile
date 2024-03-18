@@ -5,4 +5,6 @@ EXPOSE 8080
 
 ENV CONFIG_PATH isat/scraper/config/config.yaml
 
+ENV SQLITE_DATABASE=sqlite:////isat/data/data.db
+
 CMD ["poetry", "run", "scraper"]
