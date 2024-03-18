@@ -14,6 +14,6 @@ services:
     volumes:
       - ./isat/data:/isat/data
       - ./images:/app/images
-      - ./logs/scraper.log:/app/logs/scraper.log
+      - ./logs:/app/logs
     depends_on:
       - dependencies

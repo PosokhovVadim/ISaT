@@ -16,7 +16,7 @@ async def fetch_url(url):
 
 
 class Scraper:
-    def __init__(self, base_url, allow_domain, max_images=1000):
+    def __init__(self, base_url, allow_domain, max_images):
         self.base_url = base_url
         self.allow_domain = allow_domain
         self.visited_urls = set()

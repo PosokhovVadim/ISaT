@@ -5,4 +5,4 @@ logs
 *.env
 images
 .ruff_cache
-*.db
+data
