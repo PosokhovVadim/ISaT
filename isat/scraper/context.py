@@ -1,8 +1,8 @@
 import httpx
 import os
-from isat.pkg.logger.logger import Logger
-from isat.pkg.storage.local.local import Local_Storage
-from isat.pkg.storage.sqllite.sqllite import Storage
+from pkg.logger.logger import Logger
+from pkg.storage.local.local import LocalStorage
+from pkg.storage.sqllite.sqllite import Storage
 
 
 class Context:
@@ -15,7 +15,7 @@ class Context:
         self.http_client = httpx.AsyncClient(headers=self.headers, timeout=self.timeout)
         self.log = Logger("scraper.log")
 
-        self.local_storage = Local_Storage("images/")
+        self.local_storage = LocalStorage("images/")
 
         sqllite_path = os.getenv("SQLITE_DATABASE")
         self.storage = Storage(sqllite_path)

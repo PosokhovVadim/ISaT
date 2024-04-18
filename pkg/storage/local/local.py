@@ -1,11 +1,11 @@
 import os
-from isat.pkg.models.image import Image
+from pkg.models.image import Image
 
 
-class Local_Storage:
+class LocalStorage:
     def __init__(self, directory_path):
         self.directory = directory_path
-        if os.path.exists(self.directory) is False:
+        if not os.path.exists(self.directory):
             os.mkdir(self.directory)
 
     def save_image(self, data, image: Image):

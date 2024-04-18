@@ -29,7 +29,7 @@ async def scrape_handler(amount: int):
     log.info("Start scraping proccess")
     scr = Scraper(cfg.base_url, cfg.allow_domain, amount)
 
-    await scr.scrape(cfg.base_url)
+    await scr.scrape_proccess(cfg.base_url)
     return {"message": f"Scraping of {amount} finished"}
 
 

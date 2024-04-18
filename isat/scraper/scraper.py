@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import logging
 import asyncio
 from isat.scraper.context import ctx
-from isat.pkg.models.image import Image
+from pkg.models.image import Image
 
 log = logging.getLogger("scraper.log")
 
@@ -22,6 +22,7 @@ class Scraper:
         self.visited_urls = set()
         self.max_images = max_images
         self.total_images = 0
+        self.all_images = []
 
     def make_absolute_url(self, url):
         return urljoin(self.base_url, url)
@@ -30,7 +31,11 @@ class Scraper:
         parsed_url = urlparse(url)
         return parsed_url.netloc
 
-    async def save_images(self, image_url):
+    async def scrape_proccess(self, url):
+        await self.scrape(url)
+        ctx.storage.add_images(self.all_images)
+
+    async def proccess_image(self, image_url):
         response = await fetch_url(image_url)
         if response.status_code != 200:
             log.warning(f"Failed to get image by url: {image_url}")
@@ -40,26 +45,33 @@ class Scraper:
         if content_type == "image/jpeg":
             data = response.read()
 
+            if await self.is_duplicate(data):
+                return
+
             id = str(uuid.uuid4())
-            local_path = ctx.local_storage.directory + id + ".jpg"
+            local_path = ctx.local_storage.directory + id + ".png"
             image = Image(id=id, url=image_url, local_path=local_path)
 
+            self.all_images.append(image)
             ctx.local_storage.save_image(data, image)
-            ctx.storage.add_image(image)
 
-        self.total_images += 1
-        log.info(f"Loaded {image_url}")
-        log.info(f"Total images: {self.total_images}")
+            self.total_images += 1
+            log.info(f"Loaded {image_url}")
+            log.info(f"Total images: {self.total_images}")
 
-    async def processing_images(self, soup):
+    async def is_duplicate(self, image):
+        return False
+
+    async def fetch_images(self, soup):
         images_url = [
             img.get("data-src") for img in soup.select("li.slider-item img[data-src]")
         ]
+
         tasks = []
         for image_url in images_url:
             if image_url is None:
                 continue
-            tasks.append(self.save_images(image_url))
+            tasks.append(self.proccess_image(image_url))
         await asyncio.gather(*tasks)
 
     async def scrape(self, url):
@@ -74,7 +86,7 @@ class Scraper:
 
                 self.visited_urls.add(url)
 
-                await self.processing_images(soup)
+                await self.fetch_images(soup)
 
                 for link in soup.find_all("a", href=True):
                     if "data-toggle" in link.attrs and link["data-toggle"] == "modal":
