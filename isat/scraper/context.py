@@ -3,6 +3,7 @@ import os
 from pkg.logger.logger import Logger
 from pkg.storage.local.local import LocalStorage
 from pkg.storage.sqllite.sqllite import Storage
+import redis
 
 
 class Context:
@@ -18,7 +19,10 @@ class Context:
         self.local_storage = LocalStorage("images/")
 
         sqllite_path = os.getenv("SQLITE_DATABASE")
+        redis_path = os.getenv("REDIS_PATH")
+
         self.storage = Storage(sqllite_path)
+        self.redis = redis.Redis.from_url(redis_path)
 
 
 ctx = Context()

@@ -1,3 +1,4 @@
+import io
 from urllib.parse import urljoin, urlparse
 import uuid
 from bs4 import BeautifulSoup
@@ -5,6 +6,8 @@ import logging
 import asyncio
 from isat.scraper.context import ctx
 from pkg.models.image import Image
+from PIL import Image as PILImage  # is ok?
+from imagehash import phash
 
 log = logging.getLogger("scraper.log")
 
@@ -46,6 +49,7 @@ class Scraper:
             data = response.read()
 
             if await self.is_duplicate(data):
+                log.info(f"Image {image_url} already exists")
                 return
 
             id = str(uuid.uuid4())
@@ -59,8 +63,16 @@ class Scraper:
             log.info(f"Loaded {image_url}")
             log.info(f"Total images: {self.total_images}")
 
-    async def is_duplicate(self, image):
-        return False
+    async def is_duplicate(self, image_data):
+        with io.BytesIO(image_data) as f:
+            image = PILImage.open(f)
+            img_hash = str(phash(image))
+
+            if ctx.redis.exists(img_hash):
+                return True
+
+            ctx.redis.set(img_hash, 1)
+            return False
 
     async def fetch_images(self, soup):
         images_url = [

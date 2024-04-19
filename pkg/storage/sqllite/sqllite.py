@@ -2,9 +2,6 @@ from sqlalchemy import create_engine
 from pkg.models.image import Image
 from sqlalchemy.orm import sessionmaker
 from typing import List
-import logging
-
-log = logging.getLogger("scraper.log")
 
 
 class Storage:
