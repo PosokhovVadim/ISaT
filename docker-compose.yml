@@ -11,3 +11,9 @@ services:
       dockerfile: dockerfile
     ports:
       - "8080:8080"
+  im-process:
+    build:
+      context: ./isat/image-process
+      dockerfile: dockerfile
+    ports:
+      - "8081:8080"
