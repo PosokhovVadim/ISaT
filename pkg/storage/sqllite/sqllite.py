@@ -24,8 +24,14 @@ class Storage:
     def close_session(self):
         self.session.close()
 
-    def update(self, id, lab_color, hsv_colors):
-        self.session.query(Image).filter(Image.id == id).update(
-            {"lab_color": lab_color, "hsv_color": hsv_colors}
-        )
+    def update_colors(self, id, lab_color, hsv_colors):
+        update_data = {
+            "lab_color_1": lab_color[0],
+            "lab_color_2": lab_color[1],
+            "lab_color_3": lab_color[2],
+            "hsv_color_1": hsv_colors[0],
+            "hsv_color_2": hsv_colors[1],
+            "hsv_color_3": hsv_colors[2],
+        }
+        self.session.query(Image).filter(Image.id == id).update(update_data)
         self.session.commit()

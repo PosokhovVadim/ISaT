@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String
+from sqlalchemy import Column, String, REAL
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -10,8 +10,12 @@ class Image(Base):
     id = Column(String, primary_key=True)
     url = Column(String, nullable=False)
     local_path = Column(String, nullable=False)
-    lab_color = Column([float, float, float], nullable=False, default=[0, 0, 0])
-    hsv_color = Column([float, float, float], nullable=False, default=[0, 0, 0])
+    lab_color_1 = Column(REAL, nullable=False, default=0.0)
+    lab_color_2 = Column(REAL, nullable=False, default=0.0)
+    lab_color_3 = Column(REAL, nullable=False, default=0.0)
+    hsv_color_1 = Column(REAL, nullable=False, default=0.0)
+    hsv_color_2 = Column(REAL, nullable=False, default=0.0)
+    hsv_color_3 = Column(REAL, nullable=False, default=0.0)
 
     # add tensor
     def __init__(self, id: str, url: str, local_path: str):

@@ -7,7 +7,7 @@ from pkg.storage.sqllite.sqllite import Storage
 
 class Context:
     def __init__(self):
-        self.http_client = httpx.AsyncClient(headers=self.headers, timeout=self.timeout)
+        self.http_client = httpx.AsyncClient()
         self.log = Logger("image-process.log")
 
         self.local_storage = LocalStorage("images/")
