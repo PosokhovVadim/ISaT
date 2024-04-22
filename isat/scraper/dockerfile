@@ -3,4 +3,10 @@ FROM base
 
 EXPOSE 8080
 
+ENV CONFIG_PATH isat/scraper/config/config.yaml
+
+ENV SQLITE_DATABASE=sqlite:////isat/data/data.db
+
+ENV REDIS_PATH=redis://redis:6379/0
+
 CMD ["poetry", "run", "scraper"]

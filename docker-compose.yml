@@ -5,9 +5,20 @@ services:
       context: .
       dockerfile: dockerfile
     image: base
+  redis:
+    image: redis
+    ports: 
+      - "6379:6379"
   scraper:
     build:
       context: ./isat/scraper
       dockerfile: dockerfile
     ports:
       - "8080:8080"
+    volumes:
+      - ./isat/data:/isat/data
+      - ./images:/app/images
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+      - dependencies
