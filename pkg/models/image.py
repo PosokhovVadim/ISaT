@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, REAL
+from sqlalchemy import Column, String, REAL, BLOB
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -16,6 +16,7 @@ class Image(Base):
     hsv_color_1 = Column(REAL, nullable=False, default=0.0)
     hsv_color_2 = Column(REAL, nullable=False, default=0.0)
     hsv_color_3 = Column(REAL, nullable=False, default=0.0)
+    tensor = Column(BLOB, nullable=True, default=None)
 
     # add tensor
     def __init__(self, id: str, url: str, local_path: str):

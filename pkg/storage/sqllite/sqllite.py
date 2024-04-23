@@ -35,3 +35,10 @@ class Storage:
         }
         self.session.query(Image).filter(Image.id == id).update(update_data)
         self.session.commit()
+
+    def update_tensor(self, id, tensor):
+        self.session.query(Image).filter(Image.id == id).update({"tensor": tensor})
+        self.session.commit()
+
+    def get_image_by_id(self, id):
+        return self.session.query(Image).filter(Image.id == id).first()

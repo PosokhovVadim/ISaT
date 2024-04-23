@@ -2,14 +2,15 @@
 # 3) count tensors
 
 import asyncio
+from io import BytesIO
 import os
 from isat.imageProcess.context import ctx
 from PIL import Image as PILImage
 from rembg import remove
 import numpy as np
 from skimage.color import rgb2lab, rgb2hsv
-
 import logging
+import torch
 
 
 log = logging.getLogger("image-process.log")
@@ -44,8 +45,14 @@ class ImageProcess:
         )
         return filename.rsplit(".", 1)[0], mean_lab_color, mean_hsv_color
 
-    async def count_tensor(self):
-        pass
+    async def count_blob_tensor(self, filename):
+        img = PILImage.open(self.local_storage.directory + filename).convert("RGB")
+        tensor = ctx.preprocess(img).unsqueeze(0)
+
+        with BytesIO() as byte_stream:
+            torch.save(tensor, byte_stream)
+            blob_tensor = byte_stream.getvalue()
+            return filename.rsplit(".", 1)[0], blob_tensor
 
     async def image_process(self):
         try:
@@ -62,5 +69,15 @@ class ImageProcess:
             for id, lab_color, hsv_color in colors:
                 ctx.storage.update_colors(id, lab_color, hsv_color)
                 log.info(f"Updated colors for {id}")
+
+            tasks = []
+            for filename in os.listdir(self.local_storage.directory):
+                tasks.append(self.count_blob_tensor(filename))
+            blob_tensors = await asyncio.gather(*tasks)
+
+            for id, blob_tensor in blob_tensors:
+                ctx.storage.update_tensor(id, blob_tensor)
+                log.info(f"Updated tensor for {id}")
+
         except Exception as e:
             log.error(e)
