@@ -42,3 +42,13 @@ class Storage:
 
     def get_image_by_id(self, id):
         return self.session.query(Image).filter(Image.id == id).first()
+
+    def get_all_lab_colors(self):
+        return self.session.query(
+            Image.id, Image.url, Image.lab_color_1, Image.lab_color_2, Image.lab_color_3
+        ).all()
+
+    def get_all_hsv_colors(self):
+        return self.session.query(
+            Image.id, Image.url, Image.hsv_color_1, Image.hsv_color_2, Image.hsv_color_3
+        ).all()

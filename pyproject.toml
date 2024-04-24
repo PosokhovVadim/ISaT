@@ -24,6 +24,7 @@ redis = "^5.0.3"
 imagehash = "^4.3.1"
 rembg = "^2.0.56"
 torchvision = "^0.17.2"
+colormath = "^3.0.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -36,3 +37,4 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 scraper = "isat.scraper.main:main"
 im-processing = "isat.imageProcess.main:main"
+color-search = "isat.colorSearch.main:main"

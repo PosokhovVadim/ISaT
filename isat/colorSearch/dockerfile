@@ -1,0 +1,10 @@
+#color-search
+FROM base
+
+EXPOSE 8082
+
+ENV SQLITE_DATABASE=sqlite:////isat/data/data.db
+
+ENV CONFIG_PATH isat/colorSearch/config/config.yaml
+
+CMD ["poetry", "run", "color-search"]
