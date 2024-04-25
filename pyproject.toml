@@ -36,5 +36,3 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 scraper = "isat.scraper.main:main"
-im-processing = "isat.imageProcess.main:main"
-color-search = "isat.colorSearch.main:main"

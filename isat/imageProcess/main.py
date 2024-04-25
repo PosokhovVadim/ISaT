@@ -1,9 +1,6 @@
-import os
 from fastapi import FastAPI
-from isat.imageProcess.config.config import Config
 from fastapi.middleware.cors import CORSMiddleware
 import logging
-import uvicorn
 from isat.imageProcess.process import ImageProcess
 
 app = FastAPI()
@@ -17,7 +14,6 @@ app.add_middleware(
 )
 
 log = logging.getLogger("image-process.log")
-cfg = Config(os.getenv("CONFIG_PATH"))
 
 
 @app.post(
@@ -26,11 +22,6 @@ cfg = Config(os.getenv("CONFIG_PATH"))
 )
 async def process_images():
     log.info("Start processing images")
-    ip = ImageProcess()
-    await ip.image_process()
+    process = ImageProcess()
+    await process.image_process()
     return {"message": "Images processed"}
-
-
-def main():
-    log.info(f"Config: {cfg.host}:{cfg.port}")
-    uvicorn.run("isat.imageProcess.main:app", host=cfg.host, port=cfg.port, reload=True)
