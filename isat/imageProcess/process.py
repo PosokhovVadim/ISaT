@@ -1,6 +1,3 @@
-# TODO: IMPLEMENT
-# 3) count tensors
-
 import asyncio
 from io import BytesIO
 import os

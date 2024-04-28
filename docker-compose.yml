@@ -43,6 +43,20 @@ services:
       - "8082:8080"
     volumes:
       - ./isat/data:/isat/data
+      - ./images:/app/images
+      - ./images_empty_bg:/app/images_empty_bg
+      - ./logs:/app/logs
+    depends_on:
+      - dependencies
+  image-search:
+    build:
+      context: ./isat/imageSearch
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8080"
+    volumes:
+      - ./isat/data:/isat/data
+      - ./images:/app/images
       - ./logs:/app/logs
     depends_on:
       - dependencies

@@ -52,3 +52,6 @@ class Storage:
         return self.session.query(
             Image.id, Image.url, Image.hsv_color_1, Image.hsv_color_2, Image.hsv_color_3
         ).all()
+
+    def get_all_tensors(self):
+        return self.session.query(Image.id, Image.url, Image.tensor).all()
