@@ -6,3 +6,4 @@ logs
 images
 .ruff_cache
 data
+images_empty_bg
